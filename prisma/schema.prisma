@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  username           String   @unique
+  email              String?  @unique
+  password_hash      String
+  trust_score        Int      @default(0)
+  review_count       Int      @default(0)
+  warning_count      Int      @default(0)
+  ban_status         Boolean  @default(false)
+  device_fingerprint String?
+  created_at         DateTime @default(now())
+  last_active_at     DateTime @default(now())
+  
+  reviews            Review[]
+  reports            Report[]
+  trust_history      TrustHistory[]
+}
+
+model State {
+  id               String   @id @default(cuid())
+  state_number     Int      @unique
+  region           String?
+  language         String?
+  description      String?
+  created_at       DateTime @default(now())
+
+  overall_score    Float    @default(0)
+  leadership_score Float    @default(0)
+  toxicity_score   Float    @default(0)
+  activity_score   Float    @default(0)
+  f2p_score        Float    @default(0)
+  stability_score  Float    @default(0)
+
+  reviews          Review[]
+  events           StateEvent[]
+}
+
+model Review {
+  id                String   @id @default(cuid())
+  user_id           String?
+  state_id          String
+  title             String
+  content           String
+
+  rating_overall    Int
+  rating_leadership Int
+  rating_activity   Int
+  rating_f2p        Int
+  rating_toxicity   Int
+  rating_stability  Int
+
+  credibility_score Float    @default(0)
+  confidence_level  String   @default("Low Confidence")
+
+  upvotes           Int      @default(0)
+  downvotes         Int      @default(0)
+
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  author_name       String?  @default("Anonymous")
+  author_ip         String?
+
+  user              User?    @relation(fields: [user_id], references: [id])
+  state             State    @relation(fields: [state_id], references: [id])
+  evidence          Evidence[]
+  reports           Report[]
+}
+
+model Evidence {
+  id                  String   @id @default(cuid())
+  review_id           String
+  image_url           String
+  evidence_type       String
+  ocr_text            String?
+  image_hash          String?
+  verification_status String   @default("Pending")
+  uploaded_at         DateTime @default(now())
+
+  review              Review   @relation(fields: [review_id], references: [id])
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  review_id   String
+  reporter_id String
+  reason      String
+  status      String   @default("Pending")
+  created_at  DateTime @default(now())
+
+  review      Review   @relation(fields: [review_id], references: [id])
+  reporter    User     @relation(fields: [reporter_id], references: [id])
+}
+
+model StateEvent {
+  id               String   @id @default(cuid())
+  state_id         String
+  event_type       String
+  description      String
+  importance_level String
+  created_at       DateTime @default(now())
+
+  state            State    @relation(fields: [state_id], references: [id])
+}
+
+model TrustHistory {
+  id            String   @id @default(cuid())
+  user_id       String
+  change_amount Int
+  reason        String
+  created_at    DateTime @default(now())
+
+  user          User     @relation(fields: [user_id], references: [id])
+}
