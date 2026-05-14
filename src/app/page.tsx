@@ -29,7 +29,7 @@ export default async function Home() {
             Know Before You <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Transfer</span>
           </h1>
           <p className="text-lg text-zinc-400 max-w-2xl">
-            The premium state reputation platform for Whiteout Survival. Explore leadership quality, detect toxic behavior, and verify transfer claims with community evidence.
+            The state reputation platform for Whiteout Survival. Explore leadership quality, detect toxic behavior, and verify transfer claims with community evidence.
           </p>
           
           <SearchBar />
