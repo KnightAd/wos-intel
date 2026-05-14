@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: Request) {
   try {
@@ -51,6 +52,10 @@ export async function POST(req: Request) {
 
       return review;
     });
+
+    // Clear cache so the new review shows up instantly
+    revalidatePath("/");
+    revalidatePath(`/states/${state_id}`);
 
     return NextResponse.json({ message: "Review created successfully", review: result }, { status: 201 });
   } catch (error) {
