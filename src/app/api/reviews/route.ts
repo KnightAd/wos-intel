@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const {
       state_id, title, content,
       rating_overall, rating_leadership, rating_activity, rating_f2p, rating_toxicity, rating_stability,
-      author_name
+      author_name, image_url
     } = data;
 
     if (!state_id || !title || !content) {
@@ -49,6 +49,7 @@ export async function POST(req: Request) {
           rating_stability,
           author_name: author_name || "Anonymous",
           author_ip: ip,
+          image_url: image_url || null,
         },
       });
 

@@ -10,7 +10,23 @@ export default function SubmitReview({ params }: { params: Promise<{ id: string 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [authorName, setAuthorName] = useState("");
+  const [image, setImage] = useState<string | null>(null);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Image is too large. Please keep it under 2MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -42,6 +58,7 @@ export default function SubmitReview({ params }: { params: Promise<{ id: string 
         body: JSON.stringify({
           state_id: id,
           author_name: authorName || "Anonymous",
+          image_url: image,
           ...formData
         }),
       });
@@ -154,13 +171,27 @@ export default function SubmitReview({ params }: { params: Promise<{ id: string 
           </div>
           <p className="text-sm text-zinc-400">Upload screenshots of state chat, world chat, or battle reports to increase the credibility of your intel.</p>
 
-          <div className="border-2 border-dashed border-zinc-700 hover:border-indigo-500/50 transition-colors rounded-2xl p-12 flex flex-col items-center justify-center gap-4 bg-zinc-950 cursor-pointer">
-            <UploadCloud className="w-12 h-12 text-zinc-600" />
-            <div className="text-center">
-              <span className="text-indigo-400 font-medium">Click to upload</span> or drag and drop
-              <p className="text-xs text-zinc-500 mt-1">PNG, JPG, JPEG up to 5MB</p>
+          {!image ? (
+            <label className="border-2 border-dashed border-zinc-700 hover:border-indigo-500/50 transition-colors rounded-2xl p-12 flex flex-col items-center justify-center gap-4 bg-zinc-950 cursor-pointer">
+              <UploadCloud className="w-12 h-12 text-zinc-600" />
+              <div className="text-center">
+                <span className="text-indigo-400 font-medium">Click to upload</span> or drag and drop
+                <p className="text-xs text-zinc-500 mt-1">PNG, JPG, JPEG up to 2MB</p>
+              </div>
+              <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+            </label>
+          ) : (
+            <div className="relative rounded-2xl overflow-hidden border border-zinc-700 bg-zinc-950">
+              <img src={image} alt="Preview" className="w-full h-auto max-h-[400px] object-contain" />
+              <button
+                type="button"
+                onClick={() => setImage(null)}
+                className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-lg transition-colors"
+              >
+                <ShieldAlert className="w-5 h-5 rotate-180" />
+              </button>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="flex justify-end gap-4">

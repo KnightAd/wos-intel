@@ -155,6 +155,13 @@ export default async function StateDetails({ params }: { params: Promise<{ id: s
                 <p className="text-zinc-300 leading-relaxed bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
                   {review.content}
                 </p>
+                {review.image_url && (
+                  <div className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 group relative">
+                    <a href={review.image_url} target="_blank" rel="noopener noreferrer">
+                      <img src={review.image_url} alt="Evidence" className="w-full h-auto max-h-[500px] object-contain cursor-zoom-in hover:opacity-90 transition-opacity" />
+                    </a>
+                  </div>
+                )}
                 {/* Mini score row */}
                 <div className="grid grid-cols-3 md:grid-cols-5 gap-3 text-xs font-medium pt-2 border-t border-zinc-800">
                   {[
