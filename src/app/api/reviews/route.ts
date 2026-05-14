@@ -15,6 +15,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
 
+    // Get user IP for deduplication
+    const forwarded = req.headers.get("x-forwarded-for");
+    const ip = forwarded ? forwarded.split(",")[0] : "127.0.0.1";
+
+    // Check if this IP already reviewed this state
+    const existing = await prisma.review.findFirst({
+      where: {
+        state_id,
+        author_ip: ip
+      }
+    });
+
+    if (existing) {
+      return NextResponse.json({ 
+        message: "You have already submitted an intel report for this state." 
+      }, { status: 403 });
+    }
+
 
     const result = await prisma.$transaction(async (tx) => {
       const review = await tx.review.create({
@@ -30,6 +48,7 @@ export async function POST(req: Request) {
           rating_toxicity,
           rating_stability,
           author_name: author_name || "Anonymous",
+          author_ip: ip,
         },
       });
 
