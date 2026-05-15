@@ -63,7 +63,6 @@ export async function POST(req: Request) {
           overall_score: avg("rating_overall"),
           leadership_score: avg("rating_leadership"),
           activity_score: avg("rating_activity"),
-          f2p_score: avg("rating_f2p"),
           toxicity_score: avg("rating_toxicity"),
           stability_score: avg("rating_stability"),
         },
