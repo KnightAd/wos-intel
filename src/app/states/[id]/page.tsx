@@ -41,7 +41,6 @@ export default async function StateDetails({ params }: { params: Promise<{ id: s
     { label: "Overall",    field: "rating_overall",    score: state.overall_score,    icon: BarChart2,    color: "text-indigo-400",  accent: "indigo" },
     { label: "Leadership", field: "rating_leadership",  score: state.leadership_score, icon: Crown,        color: "text-amber-400",   accent: "amber" },
     { label: "Activity",   field: "rating_activity",    score: state.activity_score,   icon: Activity,     color: "text-blue-400",    accent: "blue" },
-    { label: "F2P",        field: "rating_f2p",         score: state.f2p_score,        icon: Scale,        color: "text-emerald-400", accent: "emerald" },
     { label: "Stability",  field: "rating_stability",   score: state.stability_score,  icon: Building,     color: "text-purple-400",  accent: "purple" },
     { label: "Toxicity",   field: "rating_toxicity",    score: state.toxicity_score,   icon: ShieldAlert,  color: "text-red-400",     accent: "red" },
   ];
@@ -167,7 +166,6 @@ export default async function StateDetails({ params }: { params: Promise<{ id: s
                   {[
                     { label: "Leadership", val: review.rating_leadership },
                     { label: "Activity",   val: review.rating_activity },
-                    { label: "F2P",        val: review.rating_f2p },
                     { label: "Stability",  val: review.rating_stability },
                     { label: "Toxicity",   val: review.rating_toxicity },
                   ].map(s => (

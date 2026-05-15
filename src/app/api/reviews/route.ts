@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     const data = await req.json();
     const {
       state_id, title, content,
-      rating_overall, rating_leadership, rating_activity, rating_f2p, rating_toxicity, rating_stability,
+      rating_overall, rating_leadership, rating_activity, rating_toxicity, rating_stability,
       author_name, image_url
     } = data;
 
@@ -44,7 +44,6 @@ export async function POST(req: Request) {
           rating_overall,
           rating_leadership,
           rating_activity,
-          rating_f2p,
           rating_toxicity,
           rating_stability,
           author_name: author_name || "Anonymous",

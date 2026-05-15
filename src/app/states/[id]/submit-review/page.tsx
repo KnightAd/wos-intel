@@ -33,7 +33,6 @@ export default function SubmitReview({ params }: { params: Promise<{ id: string 
     rating_overall: 5,
     rating_leadership: 5,
     rating_activity: 5,
-    rating_f2p: 5,
     rating_toxicity: 5,
     rating_stability: 5,
   });
@@ -139,7 +138,6 @@ export default function SubmitReview({ params }: { params: Promise<{ id: string 
               { id: "rating_overall", label: "Overall Rating (1-10)" },
               { id: "rating_leadership", label: "Leadership Quality (1-10)" },
               { id: "rating_activity", label: "Activity Level (1-10)" },
-              { id: "rating_f2p", label: "F2P Friendliness (1-10)" },
               { id: "rating_toxicity", label: "Toxicity Level (1-10, lower is better)" },
               { id: "rating_stability", label: "State Stability (1-10)" },
             ].map(metric => (

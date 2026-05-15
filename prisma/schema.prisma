@@ -37,7 +37,6 @@ model State {
   leadership_score Float    @default(0)
   toxicity_score   Float    @default(0)
   activity_score   Float    @default(0)
-  f2p_score        Float    @default(0)
   stability_score  Float    @default(0)
 
   reviews          Review[]
@@ -54,7 +53,6 @@ model Review {
   rating_overall    Int
   rating_leadership Int
   rating_activity   Int
-  rating_f2p        Int
   rating_toxicity   Int
   rating_stability  Int
 
